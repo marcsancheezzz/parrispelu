@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roger · Reserves</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#241B17;
+  --cream:#F6EFE6;
+  --clay:#B5562E;
+  --clay-dark:#8C3F1F;
+  --moss:#5C6E51;
+  --gold:#C9A24B;
+  --line:#E2D5C2;
+  --paper:#FFFBF5;
+  --muted:#8A7A6A;
+  --danger:#A8412F;
+  --radius:14px;
+  --shadow: 0 8px 24px -8px rgba(36,27,23,0.18);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.brand{
+  font-family:'Sora','Outfit',sans-serif;
+  letter-spacing:-0.02em;
+}
+.app{max-width:1100px;margin:0 auto;padding:0 20px 80px;}
+
+/* ===== HEADER ===== */
+header.top{
+  background:var(--ink);
+  color:var(--cream);
+  padding:22px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;top:0;z-index:40;
+  box-shadow:var(--shadow);
+  flex-wrap:wrap;
+  gap:14px;
+}
+.brand-wrap{display:flex;align-items:center;gap:12px;}
+.logo-mark{
+  width:40px;height:40px;border-radius:10px;
+  background:linear-gradient(135deg,var(--clay),var(--gold));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',serif;font-weight:700;font-size:19px;color:#fff;
+  flex-shrink:0;cursor:pointer;user-select:none;position:relative;
+  transition:transform .2s;
+}
+.logo-mark:active{transform:scale(.92);}
+.logo-mark .hold-ring{
+  position:absolute;inset:-4px;border-radius:13px;
+  border:2px solid var(--gold);opacity:0;
+  transform:scale(.8);
+  transition:none;
+}
+.logo-mark.holding .hold-ring{
+  opacity:1;
+  animation:holdring 2s linear forwards;
+}
+@keyframes holdring{
+  from{transform:scale(.8);clip-path:inset(0 100% 0 0);}
+  to{transform:scale(1.05);clip-path:inset(0 0 0 0);}
+}
+.brand{font-size:22px;font-weight:700;color:#fff;}
+.brand span{color:var(--gold);}
+.tagline{font-size:11px;color:#cbb89a;letter-spacing:.08em;text-transform:uppercase;margin-top:-2px;}
+.mode-toggle{display:flex;gap:6px;background:rgba(255,255,255,0.08);padding:4px;border-radius:10px;}
+.mode-toggle button{
+  border:none;background:transparent;color:#cbb89a;
+  padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;
+  font-weight:600;transition:.15s;
+}
+.mode-toggle button.active{background:var(--clay);color:#fff;}
+
+.tabs{display:flex;gap:4px;margin:24px 0 0;border-bottom:1px solid var(--line);overflow-x:auto;}
+.tabs button{
+  border:none;background:none;padding:12px 18px;font-size:14px;font-weight:600;
+  color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px;
+  transition:.15s;white-space:nowrap;
+}
+.tabs button.active{color:var(--clay-dark);border-bottom-color:var(--clay);}
+.tabs button:hover{color:var(--ink);}
+
+.view{margin-top:28px;}
+.hidden{display:none !important;}
+
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:var(--shadow);
+}
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start;}
+@media(max-width:860px){.grid2{grid-template-columns:1fr;}}
+
+/* ===== HERO ===== */
+.hero{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:36px 8px 18px;flex-wrap:wrap;gap:18px;
+  opacity:0;animation:fadeUp .6s ease-out forwards;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.hero h1{font-size:32px;color:var(--ink);font-weight:800;}
+.hero p{color:var(--muted);font-size:15px;margin-top:6px;max-width:480px;}
+.price-pill{
+  background:var(--moss);color:#fff;padding:10px 18px;border-radius:30px;
+  font-size:14px;font-weight:700;white-space:nowrap;
+}
+
+/* ===== MONTH CALENDAR ===== */
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.cal-head h3{font-size:18px;text-transform:capitalize;}
+.cal-nav{display:flex;gap:6px;}
+.cal-nav button{
+  width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:#fff;
+  cursor:pointer;font-size:16px;color:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:.15s;
+}
+.cal-nav button:hover{background:var(--cream);transform:translateY(-1px);}
+.month-dow{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;}
+.month-dow span{text-align:center;font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.05em;font-weight:700;}
+.month-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
+.day-cell{
+  border:1px solid var(--line);border-radius:9px;padding:6px 4px;text-align:center;
+  cursor:pointer;background:#fff;transition:.15s;position:relative;aspect-ratio:1/1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.day-cell .dnum{font-size:14px;font-weight:700;}
+.day-cell.outside{visibility:hidden;pointer-events:none;}
+.day-cell.closed{background:#F1ECE3;color:var(--muted);cursor:not-allowed;opacity:.55;}
+.day-cell.past{opacity:.35;cursor:not-allowed;}
+.day-cell.today{box-shadow:inset 0 0 0 2px var(--gold);}
+.day-cell.selected{background:var(--clay);border-color:var(--clay);color:#fff;transform:scale(1.05);}
+.day-cell .dot{position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.day-cell.selected .dot{background:#fff;}
+.day-cell:not(.closed):not(.past):not(.outside):hover{border-color:var(--clay);transform:translateY(-1px);}
+.cal-legend{display:flex;gap:16px;margin-top:14px;font-size:11.5px;color:var(--muted);flex-wrap:wrap;}
+.cal-legend span{display:flex;align-items:center;gap:5px;}
+.legend-swatch{width:10px;height:10px;border-radius:3px;display:inline-block;}
+
+/* ===== SLOTS ===== */
+.slot-section{margin-top:22px;}
+.slot-section h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;}
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:8px;margin-bottom:18px;}
+.slot{
+  border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 4px;
+  text-align:center;font-size:13.5px;font-weight:600;cursor:pointer;color:var(--ink);
+  transition:.12s;
+}
+.slot:hover{border-color:var(--clay);color:var(--clay-dark);transform:translateY(-1px);}
+.slot.taken{background:#F1ECE3;color:var(--muted);text-decoration:line-through;cursor:not-allowed;border-style:dashed;}
+.slot.chosen{background:var(--clay);color:#fff;border-color:var(--clay);transform:scale(1.04);}
+.empty-note{color:var(--muted);font-size:13.5px;padding:14px 0;}
+
+/* ===== SERVICES ===== */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:4px;}
+.svc-card{
+  border:1.5px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;
+  background:#fff;transition:.15s;
+}
+.svc-card.active{border-color:var(--clay);background:#FBF0E8;}
+.svc-card .svc-name{font-weight:700;font-size:13.5px;}
+.svc-card .svc-price{color:var(--clay-dark);font-weight:700;font-size:14px;margin-top:4px;}
+
+/* ===== FORM ===== */
+.field{margin-bottom:14px;}
+.field label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.field input,.field select,.field textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;
+  font-size:14.5px;background:#fff;font-family:inherit;color:var(--ink);
+}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--clay);outline-offset:1px;border-color:var(--clay);}
+.pay-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.pay-opt{
+  border:1.5px solid var(--line);border-radius:10px;padding:10px 6px;cursor:pointer;
+  text-align:center;font-size:12.5px;font-weight:700;transition:.15s;
+}
+.pay-opt.active{border-color:var(--clay);background:#FBF0E8;color:var(--clay-dark);}
+.pay-opt.disabled{opacity:.45;cursor:not-allowed;}
+.pay-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.5;}
+.summary-box{background:var(--cream);border-radius:10px;padding:14px 16px;margin:16px 0;font-size:14px;}
+.summary-box .row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.summary-box .row:last-child{margin-bottom:0;font-weight:700;border-top:1px dashed var(--line);padding-top:8px;margin-top:4px;}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:10px;padding:13px 22px;font-size:14.5px;font-weight:700;
+  cursor:pointer;width:100%;transition:.15s;
+}
+.btn-primary{background:var(--clay);color:#fff;}
+.btn-primary:hover{background:var(--clay-dark);transform:translateY(-1px);}
+.btn-primary:disabled{background:#cbb8aa;cursor:not-allowed;transform:none;}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink);}
+.btn-ghost:hover{border-color:var(--ink);}
+.btn-sm{padding:8px 14px;font-size:13px;width:auto;}
+
+/* ===== WARNING MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(36,27,23,0.55);z-index:200;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  opacity:0;pointer-events:none;transition:.2s;
+}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal-box{
+  background:var(--paper);border-radius:16px;padding:28px;max-width:440px;width:100%;
+  box-shadow:0 30px 60px -20px rgba(36,27,23,0.4);
+  transform:scale(.92) translateY(10px);transition:.25s;
+}
+.modal-overlay.show .modal-box{transform:scale(1) translateY(0);}
+.modal-box .modal-icon{
+  width:54px;height:54px;border-radius:50%;background:#FBE6DC;color:var(--danger);
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:14px;
+}
+.modal-box h3{font-size:19px;margin-bottom:10px;}
+.modal-box p{font-size:13.5px;color:var(--ink);line-height:1.6;margin-bottom:10px;}
+.modal-box .modal-strong{
+  background:#FBF0E8;border-left:3px solid var(--danger);padding:10px 12px;border-radius:8px;
+  font-size:13px;font-weight:600;color:var(--clay-dark);margin-bottom:18px;
+}
+.modal-actions{display:flex;gap:10px;}
+
+/* ===== TOAST ===== */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:#fff;padding:14px 22px;border-radius:10px;font-size:14px;
+  box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:.25s;z-index:100;
+  display:flex;align-items:center;gap:10px;max-width:90vw;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{background:var(--danger);}
+
+/* ===== BOOKING LIST ===== */
+.booking-item{
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:14px 16px;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;background:#fff;
+  animation:fadeUp .35s ease-out;
+}
+.booking-item .bdate{font-weight:700;font-size:14.5px;}
+.booking-item .btime{color:var(--clay-dark);font-size:13px;font-weight:600;}
+.booking-item .bmeta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+.badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.04em;}
+.badge.paid{background:#E4ECDF;color:var(--moss);}
+.badge.pending{background:#F6E6D6;color:var(--clay-dark);}
+.badge.locked{background:#F1ECE3;color:var(--muted);}
+.badge.method{background:#EFE6F0;color:#6B4F73;}
+
+/* ===== ADMIN ===== */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+@media(max-width:760px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);transition:.2s;}
+.stat-card:hover{transform:translateY(-2px);}
+.stat-card .label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;font-weight:700;}
+.stat-card .value{font-size:26px;font-weight:800;color:var(--ink);margin-top:6px;font-family:'Sora',serif;}
+.stat-card .sub{font-size:12px;color:var(--moss);margin-top:4px;font-weight:600;}
+.stat-card.warn .value{color:var(--clay-dark);}
+.admin-day-row{display:flex;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0;flex-wrap:wrap;}
+.admin-day-row:last-child{border-bottom:none;}
+.admin-time{width:64px;font-weight:700;font-size:14px;color:var(--clay-dark);flex-shrink:0;}
+.admin-client{flex:1;min-width:140px;}
+.admin-client .name{font-weight:600;font-size:14px;}
+.admin-client .phone{font-size:12px;color:var(--muted);}
+.admin-actions{display:flex;gap:6px;}
+.icon-btn{
+  border:1px solid var(--line);background:#fff;border-radius:8px;width:32px;height:32px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:.15s;
+}
+.icon-btn:hover{background:var(--cream);transform:translateY(-1px);}
+.hours-editor{display:grid;grid-template-columns:1fr;gap:10px;}
+.day-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--line);border-radius:9px;flex-wrap:wrap;gap:10px;}
+.day-row.off{opacity:.5;}
+.day-row .dn{font-weight:600;font-size:14px;width:90px;}
+.toggle{position:relative;width:42px;height:24px;border-radius:14px;background:var(--line);cursor:pointer;flex-shrink:0;transition:.2s;}
+.toggle.on{background:var(--moss);}
+.toggle .knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s;}
+.toggle.on .knob{left:21px;}
+.range-inputs{display:flex;gap:8px;align-items:center;font-size:13px;}
+.range-inputs input{width:80px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;font-size:13px;}
+.section-title{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700;margin:28px 0 12px;}
+.section-title:first-child{margin-top:0;}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-state .big{font-size:38px;margin-bottom:10px;}
+.lock-banner{
+  display:flex;gap:10px;align-items:flex-start;background:#FBF0E8;border:1px solid #ECD2BB;
+  border-radius:10px;padding:12px 14px;font-size:13px;color:var(--clay-dark);margin-bottom:16px;
+}
+footer.app-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:50px;padding-top:20px;border-top:1px solid var(--line);}
+.login-wrap{max-width:380px;margin:60px auto;}
+.login-wrap h2{margin-bottom:4px;}
+.login-wrap p{color:var(--muted);font-size:13.5px;margin-bottom:20px;}
+.err-msg{color:var(--danger);font-size:13px;margin-top:8px;display:none;}
+
+/* admin services editor */
+.svc-edit-row{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:9px;padding:10px 12px;margin-bottom:8px;}
+.svc-edit-row input[type=text]{flex:2;}
+.svc-edit-row input[type=number]{flex:1;}
+.svc-edit-row input{padding:8px 10px;border:1px solid var(--line);border-radius:7px;font-size:13.5px;font-family:inherit;}
+.svc-edit-row .first-badge{font-size:10px;background:var(--gold);color:#fff;padding:3px 7px;border-radius:6px;font-weight:700;white-space:nowrap;}
+
+/* map */
+.map-wrap{border-radius:10px;overflow:hidden;border:1px solid var(--line);margin-top:14px;}
+.map-wrap iframe{width:100%;height:220px;border:0;display:block;}
+.addr-line{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.5;}
+
+/* hidden mode toggle */
+.client-only-badge{
+  display:flex;align-items:center;gap:8px;color:#cbb89a;font-size:12.5px;font-weight:600;
+  padding:8px 10px;
+}
+.lang-switch{display:flex;gap:4px;background:rgba(255,255,255,0.08);padding:4px;border-radius:9px;}
+.lang-switch button{
+  border:none;background:transparent;color:#cbb89a;padding:7px 12px;border-radius:7px;
+  font-size:12.5px;cursor:pointer;font-weight:700;transition:.15s;
+}
+.lang-switch button.active{background:var(--gold);color:var(--ink);}
+.loading-overlay{
+  position:fixed;inset:0;background:var(--ink);z-index:300;
+  display:flex;align-items:center;justify-content:center;transition:opacity .3s;
+}
+.loading-overlay.hidden{opacity:0;pointer-events:none;}
+.loading-box{text-align:center;color:#fff;}
+.loading-spinner{
+  width:38px;height:38px;border-radius:50%;
+  border:3px solid rgba(255,255,255,0.2);border-top-color:var(--gold);
+  margin:0 auto 14px;animation:spin 0.8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:13.5px;color:#cbb89a;font-weight:600;}
+.client-only-badge .live-dot{width:7px;height:7px;border-radius:50%;background:#7DBE6E;animation:pulse 1.6s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-box">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Carregant Roger Barber…</div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="brand-wrap">
+    <div class="logo-mark" id="logoTrigger"><span id="logoLetter">R</span><div class="hold-ring" id="holdRing"></div></div>
+    <div>
+      <div class="brand">roger<span>.</span></div>
+      <div class="tagline">Barber</div>
+    </div>
+  </div>
+  <div id="headerRight" style="display:flex;align-items:center;gap:10px;">
+    <div class="lang-switch" id="langSwitch">
+      <button id="langCaBtn" onclick="setLang('ca')" class="active">CA</button>
+      <button id="langEsBtn" onclick="setLang('es')">ES</button>
+    </div>
+    <div class="client-only-badge" id="clientBadge"><span class="live-dot"></span><span id="badgeText">Reserves obertes</span></div>
+  </div>
+</header>
+
+<div class="app">
+
+  <div id="clientView" class="view">
+    <div class="hero">
+      <div>
+        <h1 data-i18n="heroTitle">Reserva la teva cita</h1>
+        <p data-i18n="heroSub">Tria servei, dia i hora. Tancat els dilluns.</p>
+      </div>
+      <div class="price-pill" id="heroPricePill">des de 15 €</div>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <h3 style="margin-bottom:14px;font-size:16px;" data-i18n="servicesTitle">Serveis</h3>
+      <div class="svc-grid" id="svcGrid"></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="cal-head">
+          <h3 id="monthLabel">Mes</h3>
+          <div class="cal-nav">
+            <button onclick="shiftMonth(-1)">‹</button>
+            <button onclick="shiftMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="month-dow" id="monthDow"></div>
+        <div class="month-grid" id="monthGrid"></div>
+        <div class="cal-legend">
+          <span><span class="legend-swatch" style="background:#F1ECE3;"></span><span data-i18n="legendClosed">Tancat</span></span>
+          <span><span class="legend-swatch" style="background:var(--gold);border-radius:50%;width:6px;height:6px;"></span><span data-i18n="legendBookings">Amb cites</span></span>
+          <span><span class="legend-swatch" style="box-shadow:inset 0 0 0 2px var(--gold);background:#fff;"></span><span data-i18n="legendToday">Avui</span></span>
+        </div>
+
+        <div id="slotsWrap" style="margin-top:8px;">
+          <div class="slot-section">
+            <h4 data-i18n="morning">Matí</h4>
+            <div class="slots" id="slotsMorning"></div>
+          </div>
+          <div class="slot-section">
+            <h4 data-i18n="afternoon">Tarda</h4>
+            <div class="slots" id="slotsAfternoon"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 style="margin-bottom:16px;" data-i18n="yourDataTitle">Les teves dades</h3>
+        <div id="lockBannerSlot"></div>
+        <div class="field">
+          <label data-i18n="fullName">Nom i cognoms</label>
+          <input type="text" id="custName" placeholder="Maria Pujol">
+        </div>
+        <div class="field">
+          <label data-i18n="phone">Telèfon</label>
+          <input type="tel" id="custPhone" placeholder="612 345 678">
+        </div>
+        <div class="field">
+          <label data-i18n="payMethodLabel">Forma de pagament</label>
+          <div class="pay-options" id="payOptionsWrap"></div>
+          <div class="pay-note" id="payNote"></div>
+        </div>
+
+        <div class="summary-box">
+          <div class="row"><span data-i18n="sumServiceLabel">Servei</span><span id="sumService">—</span></div>
+          <div class="row"><span data-i18n="sumDateLabel">Dia i hora</span><span id="sumDateTime">—</span></div>
+          <div class="row"><span data-i18n="sumPayLabel">Pagament</span><span id="sumPay">—</span></div>
+          <div class="row"><span data-i18n="sumTotalLabel">Total</span><span id="sumTotal">—</span></div>
+        </div>
+
+        <button class="btn btn-primary" id="confirmBtn" onclick="openConfirmModal()" disabled data-i18n="chooseTimeFirst">Tria una hora primer</button>
+
+        <div class="map-wrap">
+          <iframe loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=2.158772%2C42.224132%2C2.178772%2C42.234132&layer=mapnik&marker=42.229132%2C2.168772"></iframe>
+        </div>
+        <div class="addr-line" data-i18n="addressLine">📍 Avinguda Verge de Núria, 4-2 · 17530 Campdevànol, Girona</div>
+      </div>
+    </div>
+
+    <div class="section-title" data-i18n="myBookingsTitle">Les meves cites</div>
+    <div id="myBookingsList"></div>
+
+
+    <footer class="app-footer" data-i18n="footerText">Roger Barber · Cancel·lació gratuïta fins el dia abans · El mateix dia no es pot cancel·lar · Tancat els dilluns</footer>
+  </div>
+
+  <div id="adminLoginView" class="view hidden">
+    <div class="login-wrap card">
+      <h2>Accés gestió</h2>
+      <p>Aquesta secció és només per a Roger.</p>
+      <div class="field">
+        <label>Contrasenya</label>
+        <input type="password" id="adminPass" placeholder="••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="btn btn-primary" onclick="adminLogin()">Entrar</button>
+      <div class="err-msg" id="adminErr">Contrasenya incorrecta.</div>
+    </div>
+  </div>
+
+  <div id="adminView" class="view hidden">
+    <div class="tabs">
+      <button class="active" data-tab="dash" onclick="setAdminTab('dash')">Resum</button>
+      <button data-tab="agenda" onclick="setAdminTab('agenda')">Agenda</button>
+      <button data-tab="hours" onclick="setAdminTab('hours')">Horaris</button>
+      <button data-tab="services" onclick="setAdminTab('services')">Serveis</button>
+      <button data-tab="money" onclick="setAdminTab('money')">Caixa</button>
+    </div>
+
+    <div id="tab-dash" class="admin-tab">
+      <div class="stat-grid" id="statGrid"></div>
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Últimes reserves</h3>
+        <div id="upcomingList"></div>
+      </div>
+    </div>
+
+    <div id="tab-agenda" class="admin-tab hidden">
+      <div class="card">
+        <div class="cal-head">
+          <h3 id="adminMonthLabel">Mes</h3>
+          <div class="cal-nav">
+            <button onclick="adminShiftMonth(-1)">‹</button>
+            <button onclick="adminShiftMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="month-dow" id="adminMonthDow"></div>
+        <div class="month-grid" id="adminMonthGrid"></div>
+        <div class="section-title" id="adminDayTitle">Selecciona un dia</div>
+        <div id="adminDayAgenda"></div>
+      </div>
+    </div>
+
+    <div id="tab-hours" class="admin-tab hidden">
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Horari setmanal</h3>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">Defineix les franges de matí i tarda per cada dia. Sessions d'1 hora.</p>
+        <div class="hours-editor" id="hoursEditor"></div>
+        <button class="btn btn-primary" style="margin-top:18px;" onclick="saveHours()">Desar horari</button>
+      </div>
+    </div>
+
+    <div id="tab-services" class="admin-tab hidden">
+      <div class="card">
+        <h3 style="margin-bottom:6px;">Serveis i preus</h3>
+        <p style="color:var(--muted);font-size:13px;margin-bottom:18px;">El primer servei de la llista és el que es mostra per defecte als clients.</p>
+        <div id="servicesEditor"></div>
+        <button class="btn btn-ghost btn-sm" style="margin-top:6px;" onclick="addServiceRow()">+ Afegir servei</button>
+        <button class="btn btn-primary" style="margin-top:14px;" onclick="saveServices()">Desar serveis</button>
+      </div>
+    </div>
+
+    <div id="tab-money" class="admin-tab hidden">
+      <div class="card">
+        <h3 style="margin-bottom:14px;">Resum de caixa</h3>
+        <div class="stat-grid" id="moneyStatGrid"></div>
+        <div class="section-title">Historial de transaccions</div>
+        <div id="moneyHistory"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <h3 data-i18n="modalTitle">Confirma's segur abans de pagar</h3>
+    <p><span data-i18n="modalBookingAbout">Estàs a punt de reservar</span> <strong id="modalServiceLine"></strong> <span data-i18n="modalFor">per al</span> <strong id="modalDateLine"></strong>.</p>
+    <div class="modal-strong" data-i18n="modalWarning">Assegura't que aquesta hora et va bé: un cop confirmada la cita NO es fan reemborsaments i el mateix dia de la cita no es pot cancel·lar, sense excepcions.</div>
+    <p style="font-size:12.5px;color:var(--muted);" data-i18n="modalCancelInfo">Pots cancel·lar sense cap problema fins al dia abans de la cita.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeConfirmModal()" data-i18n="modalBack">Tornar</button>
+      <button class="btn btn-primary" onclick="confirmBooking()" data-i18n="modalConfirm">Ho entenc, confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================== API BASE ================== */
+const API = '/api';
+const LS_CUSTOMER = 'roger_customer_v1';
+
+const DAY_NAMES_CA = ['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
+const DAY_NAMES_SHORT_CA = ['Dg','Dl','Dt','Dc','Dj','Dv','Ds'];
+const MONTH_NAMES_CA = ['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
+const DAY_NAMES_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const DAY_NAMES_SHORT_ES = ['Do','Lu','Ma','Mi','Ju','Vi','Sá'];
+const MONTH_NAMES_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+let currentLang = localStorage.getItem('roger_lang_v1') || 'ca';
+let DAY_NAMES = currentLang==='es' ? DAY_NAMES_ES : DAY_NAMES_CA;
+let DAY_NAMES_SHORT = currentLang==='es' ? DAY_NAMES_SHORT_ES : DAY_NAMES_SHORT_CA;
+let MONTH_NAMES = currentLang==='es' ? MONTH_NAMES_ES : MONTH_NAMES_CA;
+
+const I18N = {
+  ca:{
+    heroTitle:'Reserva la teva cita',
+    heroSub:'Tria servei, dia i hora. Tancat els dilluns.',
+    servicesTitle:'Serveis',
+    legendClosed:'Tancat', legendBookings:'Amb cites', legendToday:'Avui',
+    morning:'Matí', afternoon:'Tarda',
+    yourDataTitle:'Les teves dades',
+    fullName:'Nom i cognoms', phone:'Telèfon',
+    payMethodLabel:'Forma de pagament',
+    sumServiceLabel:'Servei', sumDateLabel:'Dia i hora', sumPayLabel:'Pagament', sumTotalLabel:'Total',
+    chooseTimeFirst:'Tria una hora primer',
+    addressLine:'📍 Avinguda Verge de Núria, 4-2 · 17530 Campdevànol, Girona',
+    myBookingsTitle:'Les meves cites',
+    pastVisitsTitle:'Historial de visites',
+    footerText:"Roger Barber · Cancel·lació gratuïta fins el dia abans · El mateix dia no es pot cancel·lar · Tancat els dilluns",
+    modalTitle:"Confirma't segur abans de pagar",
+    modalBookingAbout:'Estàs a punt de reservar', modalFor:'per al',
+    modalWarning:"Assegura't que aquesta hora et va bé: un cop confirmada la cita NO es fan reemborsaments i el mateix dia de la cita no es pot cancel·lar, sense excepcions.",
+    modalCancelInfo:'Pots cancel·lar sense cap problema fins al dia abans de la cita.',
+    modalBack:'Tornar', modalConfirm:'Ho entenc, confirmar',
+    badgeOpen:'Reserves obertes',
+    selectDayNote:'Selecciona un dia al calendari per veure les hores disponibles.',
+    noSlotNote:'Sense franja.',
+    lockBannerToday:"🔒 Reserves d'avui: un cop confirmada, aquesta cita ja no es pot cancel·lar.",
+    confirmBtnPrefix:'Confirmar reserva ·',
+    payCash:'💶 Efectiu', payBizum:'📱 Bizum', payCard:'💳 Targeta',
+    payCashNote:'Paga en efectiu el mateix dia de la cita, a la barbershop.',
+    payBizumNote:'Rebràs el número per fer el Bizum. La cita es confirma quan es rep el pagament.',
+    payCardNote:'Pagament amb targeta (proper enllaç de pagament segur). La cita es confirma quan es rep el pagament.',
+    payCashFullExtra:' (Efectiu no disponible ara mateix: ja hi ha 3 reserves en efectiu pendents de cobrar.)',
+    payLabelEfectiu:'Efectiu', payLabelBizum:'Bizum', payLabelTargeta:'Targeta',
+    noBookingsYet:'Encara no tens cap cita reservada.',
+    paidBadge:'Pagat', pendingBadge:'Pendent', lockedBadge:'No cancel·lable',
+    cancelBtn:'Cancel·lar',
+    toastFillData:'Omple el nom i el telèfon',
+    toastChooseTime:'Tria dia i hora',
+    toastSlotTaken:"Aquesta hora ja s'ha reservat. Tria una altra.",
+    toastCashFull:'Efectiu no disponible: ja hi ha 3 reserves pendents. Tria Bizum o Targeta.',
+    toastConfirmedPrefix:'Cita confirmada per al',
+    toastAtTime:'a les',
+    toastCannotCancelToday:'El mateix dia de la cita no es pot cancel·lar.',
+    toastCancelled:'Cita cancel·lada'
+  },
+  es:{
+    heroTitle:'Reserva tu cita',
+    heroSub:'Elige servicio, día y hora. Cerrado los lunes.',
+    servicesTitle:'Servicios',
+    legendClosed:'Cerrado', legendBookings:'Con citas', legendToday:'Hoy',
+    morning:'Mañana', afternoon:'Tarde',
+    yourDataTitle:'Tus datos',
+    fullName:'Nombre y apellidos', phone:'Teléfono',
+    payMethodLabel:'Forma de pago',
+    sumServiceLabel:'Servicio', sumDateLabel:'Día y hora', sumPayLabel:'Pago', sumTotalLabel:'Total',
+    chooseTimeFirst:'Elige una hora primero',
+    addressLine:'📍 Avinguda Verge de Núria, 4-2 · 17530 Campdevànol, Girona',
+    myBookingsTitle:'Mis citas',
+    pastVisitsTitle:'Historial de visitas',
+    footerText:'Roger Barber · Cancelación gratuita hasta el día antes · El mismo día no se puede cancelar · Cerrado los lunes',
+    modalTitle:'Confírmalo seguro antes de pagar',
+    modalBookingAbout:'Estás a punto de reservar', modalFor:'para el',
+    modalWarning:'Asegúrate de que esta hora te va bien: una vez confirmada la cita NO se hacen reembolsos y el mismo día de la cita no se puede cancelar, sin excepciones.',
+    modalCancelInfo:'Puedes cancelar sin ningún problema hasta el día antes de la cita.',
+    modalBack:'Volver', modalConfirm:'Lo entiendo, confirmar',
+    badgeOpen:'Reservas abiertas',
+    selectDayNote:'Selecciona un día en el calendario para ver las horas disponibles.',
+    noSlotNote:'Sin franja.',
+    lockBannerToday:'🔒 Reservas de hoy: una vez confirmada, esta cita ya no se puede cancelar.',
+    confirmBtnPrefix:'Confirmar reserva ·',
+    payCash:'💶 Efectivo', payBizum:'📱 Bizum', payCard:'💳 Tarjeta',
+    payCashNote:'Paga en efectivo el mismo día de la cita, en la barbería.',
+    payBizumNote:'Recibirás el número para hacer el Bizum. La cita se confirma cuando se recibe el pago.',
+    payCardNote:'Pago con tarjeta (próximo enlace de pago seguro). La cita se confirma cuando se recibe el pago.',
+    payCashFullExtra:' (Efectivo no disponible ahora mismo: ya hay 3 reservas en efectivo pendientes de cobro.)',
+    payLabelEfectiu:'Efectivo', payLabelBizum:'Bizum', payLabelTargeta:'Tarjeta',
+    noBookingsYet:'Todavía no tienes ninguna cita reservada.',
+    paidBadge:'Pagado', pendingBadge:'Pendiente', lockedBadge:'No cancelable',
+    cancelBtn:'Cancelar',
+    toastFillData:'Rellena el nombre y el teléfono',
+    toastChooseTime:'Elige día y hora',
+    toastSlotTaken:'Esta hora ya está reservada. Elige otra.',
+    toastCashFull:'Efectivo no disponible: ya hay 3 reservas pendientes. Elige Bizum o Tarjeta.',
+    toastConfirmedPrefix:'Cita confirmada para el',
+    toastAtTime:'a las',
+    toastCannotCancelToday:'El mismo día de la cita no se puede cancelar.',
+    toastCancelled:'Cita cancelada'
+  }
+};
+function t(key){ return (I18N[currentLang] && I18N[currentLang][key]) || I18N.ca[key] || key; }
+function setLang(lang){
+  currentLang = lang;
+  localStorage.setItem('roger_lang_v1', lang);
+  DAY_NAMES = lang==='es' ? DAY_NAMES_ES : DAY_NAMES_CA;
+  DAY_NAMES_SHORT = lang==='es' ? DAY_NAMES_SHORT_ES : DAY_NAMES_SHORT_CA;
+  MONTH_NAMES = lang==='es' ? MONTH_NAMES_ES : MONTH_NAMES_CA;
+  document.getElementById('langCaBtn').classList.toggle('active', lang==='ca');
+  document.getElementById('langEsBtn').classList.toggle('active', lang==='es');
+  applyStaticTranslations();
+  if(mode==='client'){ renderClient(); }
+}
+function applyStaticTranslations(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if(val) el.textContent = val;
+  });
+  const badgeText = document.getElementById('badgeText');
+  if(badgeText) badgeText.textContent = t('badgeOpen');
+}
+const SLOT_MIN = 60; // sessions of 1 hour
+const CASH_PENDING_LIMIT = 3;
+
+/* ================== DEFAULTS ================== */
+function defaultHours(){
+  return {
+    0:{open:false, morning:['',''], afternoon:['','']},
+    1:{open:false, morning:['09:00','13:00'], afternoon:['16:00','19:00']},
+    2:{open:true,  morning:['09:00','13:00'], afternoon:['16:00','19:00']},
+    3:{open:true,  morning:['09:00','13:00'], afternoon:['16:00','19:00']},
+    4:{open:true,  morning:['09:00','13:00'], afternoon:['16:00','19:00']},
+    5:{open:true,  morning:['09:00','13:00'], afternoon:['16:00','19:00']},
+    6:{open:true,  morning:['09:00','13:00'], afternoon:['','']}
+  };
+}
+function defaultServices(){
+  return [
+    {id:'s1', name:'Tallat', price:15},
+    {id:'s2', name:'Tallat i barba', price:15},
+    {id:'s3', name:'Tenyit', price:50}
+  ];
+}
+
+/* ================== API HELPERS ================== */
+async function apiGetHours(){
+  const res = await fetch(API+'/hours');
+  if(!res.ok) throw new Error('hours_fetch_failed');
+  return await res.json();
+}
+async function apiSaveHours(hours){
+  const res = await fetch(API+'/hours', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(hours) });
+  if(!res.ok) throw new Error('hours_save_failed');
+  return await res.json();
+}
+async function apiGetBookings(){
+  const res = await fetch(API+'/bookings');
+  if(!res.ok) throw new Error('bookings_fetch_failed');
+  return await res.json();
+}
+async function apiCreateBooking(booking){
+  const res = await fetch(API+'/bookings', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(booking) });
+  if(res.status===409){ return {conflict:true}; }
+  if(!res.ok) throw new Error('booking_create_failed');
+  return { conflict:false, data: await res.json() };
+}
+async function apiPatchBooking(id, updates){
+  const res = await fetch(API+'/bookings', { method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id, ...updates}) });
+  if(!res.ok) throw new Error('booking_patch_failed');
+  return await res.json();
+}
+async function apiGetServices(){
+  const res = await fetch(API+'/services');
+  if(!res.ok) throw new Error('services_fetch_failed');
+  return await res.json();
+}
+async function apiSaveServices(services){
+  const res = await fetch(API+'/services', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(services) });
+  if(!res.ok) throw new Error('services_save_failed');
+  return await res.json();
+}
+async function apiAdminLogin(password){
+  const res = await fetch(API+'/admin-login', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password}) });
+  if(res.status===401) return {ok:false};
+  if(!res.ok) throw new Error('admin_login_failed');
+  return await res.json();
+}
+
+function loadCustomer(){
+  const c = localStorage.getItem(LS_CUSTOMER);
+  return c ? JSON.parse(c) : null;
+}
+function saveCustomer(c){ localStorage.setItem(LS_CUSTOMER, JSON.stringify(c)); }
+
+/* ================== STATE ================== */
+let HOURS = defaultHours();
+let BOOKINGS = [];
+let SERVICES = defaultServices();
+let dataLoaded = false;
+let mode = 'client';
+let clientMonthOffset = 0;
+let adminMonthOffset = 0;
+let selectedDateStr = null;
+let selectedSlot = null;
+let selectedAdminDateStr = null;
+let payMethod = 'efectiu';
+let selectedServiceId = null;
+let isAdminLoggedIn = false;
+
+/* ================== HELPERS ================== */
+function pad(n){ return n.toString().padStart(2,'0'); }
+function fmtDateStr(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function parseDateStr(s){ const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); }
+function todayStr(){ return fmtDateStr(new Date()); }
+function isToday(dateStr){ return dateStr===todayStr(); }
+function isPastDate(dateStr){
+  const today = new Date(); today.setHours(0,0,0,0);
+  return parseDateStr(dateStr) < today;
+}
+function addHoursDate(dateStr, timeStr){
+  const [h,m] = timeStr.split(':').map(Number);
+  const d = parseDateStr(dateStr);
+  d.setHours(h,m,0,0);
+  return d;
+}
+function hoursUntil(dateStr, timeStr){
+  const target = addHoursDate(dateStr, timeStr);
+  return (target.getTime() - Date.now()) / 3600000;
+}
+function genSlots(range){
+  if(!range || !range[0] || !range[1]) return [];
+  const [sh,sm] = range[0].split(':').map(Number);
+  const [eh,em] = range[1].split(':').map(Number);
+  let cur = sh*60+sm, end = eh*60+em;
+  const out=[];
+  while(cur+SLOT_MIN<=end){
+    out.push(pad(Math.floor(cur/60))+':'+pad(cur%60));
+    cur+=SLOT_MIN;
+  }
+  return out;
+}
+function getDayHours(dateStr){
+  const dow = parseDateStr(dateStr).getDay();
+  return HOURS[dow];
+}
+function isDayOpen(dateStr){ return getDayHours(dateStr).open; }
+function bookingsForDate(dateStr){ return BOOKINGS.filter(b=>b.date===dateStr && b.status!=='cancelled'); }
+function isSlotTaken(dateStr, time){ return bookingsForDate(dateStr).some(b=>b.time===time); }
+function getService(id){ return SERVICES.find(s=>s.id===id) || SERVICES[0]; }
+function cashPendingCount(){ return BOOKINGS.filter(b=>b.status!=='cancelled' && !b.paid && b.payMethod==='efectiu' && !isPastDate(b.date)).length; }
+
+function showToast(msg, isErr=false){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show'+(isErr?' err':'');
+  setTimeout(()=>{ t.className='toast'; }, 3200);
+}
+function uid(){ return 'b'+Date.now()+Math.random().toString(36).slice(2,7); }
+function nowTimestampLabel(){
+  const d = new Date();
+  return pad(d.getDate())+'/'+pad(d.getMonth()+1)+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+
+/* ================== HIDDEN ADMIN TRIGGER (long-press 2s) ================== */
+let holdTimer = null;
+function initHiddenTrigger(){
+  const el = document.getElementById('logoTrigger');
+  const ring = document.getElementById('holdRing');
+  function start(e){
+    el.classList.add('holding');
+    holdTimer = setTimeout(()=>{
+      el.classList.remove('holding');
+      toggleAdminMode();
+    }, 2000);
+  }
+  function cancel(){
+    clearTimeout(holdTimer);
+    el.classList.remove('holding');
+  }
+  el.addEventListener('mousedown', start);
+  el.addEventListener('touchstart', start, {passive:true});
+  el.addEventListener('mouseup', cancel);
+  el.addEventListener('mouseleave', cancel);
+  el.addEventListener('touchend', cancel);
+  el.addEventListener('touchcancel', cancel);
+  el.addEventListener('contextmenu', e=>e.preventDefault());
+}
+function toggleAdminMode(){
+  if(mode==='admin'){
+    exitToClient();
+  } else {
+    goToAdmin();
+  }
+}
+function goToAdmin(){
+  mode = 'admin';
+  document.getElementById('clientView').classList.add('hidden');
+  if(isAdminLoggedIn){
+    document.getElementById('adminLoginView').classList.add('hidden');
+    document.getElementById('adminView').classList.remove('hidden');
+    renderAdmin();
+  } else {
+    document.getElementById('adminView').classList.add('hidden');
+    document.getElementById('adminLoginView').classList.remove('hidden');
+  }
+}
+function exitToClient(){
+  mode = 'client';
+  document.getElementById('adminLoginView').classList.add('hidden');
+  document.getElementById('adminView').classList.add('hidden');
+  document.getElementById('clientView').classList.remove('hidden');
+  renderClient();
+}
+async function adminLogin(){
+  const val = document.getElementById('adminPass').value;
+  const btn = document.querySelector('#adminLoginView .btn-primary');
+  const originalText = btn.textContent;
+  btn.textContent = 'Comprovant...';
+  btn.disabled = true;
+  try{
+    const result = await apiAdminLogin(val);
+    if(result.ok){
+      isAdminLoggedIn = true;
+      document.getElementById('adminErr').style.display='none';
+      document.getElementById('adminLoginView').classList.add('hidden');
+      document.getElementById('adminView').classList.remove('hidden');
+      document.getElementById('adminPass').value='';
+      renderAdmin();
+    } else {
+      document.getElementById('adminErr').style.display='block';
+    }
+  } catch(e){
+    document.getElementById('adminErr').textContent = 'Error de connexió. Torna-ho a provar.';
+    document.getElementById('adminErr').style.display='block';
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+/* ================== SERVICES UI (client) ================== */
+function renderServiceGrid(){
+  const wrap = document.getElementById('svcGrid');
+  wrap.innerHTML='';
+  if(!selectedServiceId && SERVICES.length){ selectedServiceId = SERVICES[0].id; }
+  SERVICES.forEach(s=>{
+    const card = document.createElement('div');
+    card.className='svc-card'+(s.id===selectedServiceId?' active':'');
+    card.innerHTML = `<div class="svc-name">${s.name}</div><div class="svc-price">${s.price} €</div>`;
+    card.onclick = ()=>{ selectedServiceId = s.id; renderServiceGrid(); updateSummary(); updateHeroPrice(); };
+    wrap.appendChild(card);
+  });
+}
+function updateHeroPrice(){
+  const minPrice = Math.min(...SERVICES.map(s=>s.price));
+  document.getElementById('heroPricePill').textContent = 'des de '+minPrice+' €';
+}
+
+/* ================== PAYMENT OPTIONS ================== */
+function renderPayOptions(){
+  const wrap = document.getElementById('payOptionsWrap');
+  const cashFull = cashPendingCount() >= CASH_PENDING_LIMIT;
+  if(cashFull && payMethod==='efectiu'){ payMethod='bizum'; }
+  wrap.innerHTML = `
+    <div class="pay-opt ${payMethod==='efectiu'?'active':''} ${cashFull?'disabled':''}" id="payCash">${t('payCash')}</div>
+    <div class="pay-opt ${payMethod==='bizum'?'active':''}" id="payBizum">${t('payBizum')}</div>
+    <div class="pay-opt ${payMethod==='targeta'?'active':''}" id="payCard">${t('payCard')}</div>
+  `;
+  document.getElementById('payCash').onclick = cashFull ? null : ()=>setPayMethod('efectiu');
+  document.getElementById('payBizum').onclick = ()=>setPayMethod('bizum');
+  document.getElementById('payCard').onclick = ()=>setPayMethod('targeta');
+  updatePayNote(cashFull);
+}
+function updatePayNote(cashFull){
+  const note = document.getElementById('payNote');
+  if(payMethod==='efectiu'){
+    note.textContent = t('payCashNote');
+  } else if(payMethod==='bizum'){
+    note.textContent = t('payBizumNote');
+  } else {
+    note.textContent = t('payCardNote');
+  }
+  if(cashFull && payMethod!=='efectiu'){
+    note.textContent += t('payCashFullExtra');
+  }
+}
+function setPayMethod(m){
+  payMethod = m;
+  renderPayOptions();
+  updateSummary();
+}
+
+/* ================== CLIENT: MONTH CALENDAR ================== */
+function shiftMonth(dir){
+  clientMonthOffset += dir;
+  renderClientMonth();
+}
+function buildMonthGrid(monthDate, selected, dowEl, gridEl, onPick){
+  dowEl.innerHTML = DAY_NAMES_SHORT.map(n=>`<span>${n}</span>`).join('');
+  gridEl.innerHTML='';
+  const year = monthDate.getFullYear(), month = monthDate.getMonth();
+  const firstOfMonth = new Date(year, month, 1);
+  const startDow = firstOfMonth.getDay()===0 ? 6 : firstOfMonth.getDay()-1; // Monday-first
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  for(let i=0;i<startDow;i++){
+    const cell = document.createElement('div');
+    cell.className='day-cell outside';
+    gridEl.appendChild(cell);
+  }
+  for(let day=1; day<=daysInMonth; day++){
+    const d = new Date(year, month, day);
+    const dStr = fmtDateStr(d);
+    const open = isDayOpen(dStr);
+    const past = d < today;
+    const hasBookings = bookingsForDate(dStr).length>0;
+    const cell = document.createElement('div');
+    cell.className = 'day-cell'
+      + (!open?' closed':'')
+      + (past?' past':'')
+      + (isToday(dStr)?' today':'')
+      + (dStr===selected?' selected':'');
+    cell.innerHTML = `<div class="dnum">${day}</div>` + (hasBookings && open && !past ? '<div class="dot"></div>' : '');
+    if(open && !past){
+      cell.onclick = ()=>onPick(dStr);
+    }
+    gridEl.appendChild(cell);
+  }
+  return MONTH_NAMES[month]+' '+year;
+}
+function renderClientMonth(){
+  const base = new Date();
+  base.setMonth(base.getMonth()+clientMonthOffset);
+  base.setDate(1);
+  const label = buildMonthGrid(base, selectedDateStr, document.getElementById('monthDow'), document.getElementById('monthGrid'), (dStr)=>{
+    selectedDateStr = dStr; selectedSlot=null;
+    renderClientMonth(); renderSlots(); updateSummary();
+  });
+  document.getElementById('monthLabel').textContent = label;
+}
+
+function renderSlots(){
+  const morningWrap = document.getElementById('slotsMorning');
+  const afternoonWrap = document.getElementById('slotsAfternoon');
+  morningWrap.innerHTML=''; afternoonWrap.innerHTML='';
+
+  if(!selectedDateStr){
+    morningWrap.innerHTML = '<div class="empty-note">'+t('selectDayNote')+'</div>';
+    afternoonWrap.parentElement.style.display='none';
+    return;
+  }
+  afternoonWrap.parentElement.style.display='';
+
+  const dh = getDayHours(selectedDateStr);
+  const morningSlots = genSlots(dh.morning);
+  const afternoonSlots = genSlots(dh.afternoon);
+  const lockedToday = isToday(selectedDateStr);
+
+  function buildSlotEls(list, wrap){
+    if(list.length===0){ wrap.innerHTML='<div class="empty-note">'+t('noSlotNote')+'</div>'; return; }
+    list.forEach(t2=>{
+      const taken = isSlotTaken(selectedDateStr, t2);
+      const pastSlot = isToday(selectedDateStr) && hoursUntil(selectedDateStr,t2) <= 0;
+      const el = document.createElement('div');
+      el.className = 'slot'
+        + (taken || pastSlot ? ' taken' : '')
+        + (selectedSlot===t2 ? ' chosen' : '');
+      el.textContent = t2;
+      if(!taken && !pastSlot){
+        el.onclick = ()=>{ selectedSlot = t2; renderSlots(); updateSummary(); };
+      }
+      wrap.appendChild(el);
+    });
+  }
+  buildSlotEls(morningSlots, morningWrap);
+  buildSlotEls(afternoonSlots, afternoonWrap);
+
+  const lockSlot = document.getElementById('lockBannerSlot');
+  if(lockedToday){
+    lockSlot.innerHTML = `<div class="lock-banner">${t('lockBannerToday')}</div>`;
+  } else {
+    lockSlot.innerHTML = '';
+  }
+}
+
+function updateSummary(){
+  const sumSvc = document.getElementById('sumService');
+  const sumDT = document.getElementById('sumDateTime');
+  const sumPay = document.getElementById('sumPay');
+  const sumTotal = document.getElementById('sumTotal');
+  const btn = document.getElementById('confirmBtn');
+  const svc = selectedServiceId ? getService(selectedServiceId) : null;
+
+  sumSvc.textContent = svc ? svc.name : '—';
+
+  if(selectedDateStr && selectedSlot && svc){
+    const d = parseDateStr(selectedDateStr);
+    sumDT.textContent = `${d.getDate()} ${MONTH_NAMES[d.getMonth()]} · ${selectedSlot}`;
+    sumTotal.textContent = svc.price.toFixed(2).replace('.',',')+' €';
+    btn.disabled = false;
+    btn.textContent = t('confirmBtnPrefix')+' '+svc.price+' €';
+  } else {
+    sumDT.textContent = '—';
+    sumTotal.textContent = '—';
+    btn.disabled = true;
+    btn.textContent = t('chooseTimeFirst');
+  }
+  const payLabels = {efectiu:t('payLabelEfectiu'), bizum:t('payLabelBizum'), targeta:t('payLabelTargeta')};
+  sumPay.textContent = payLabels[payMethod] || '—';
+}
+
+/* ================== CONFIRM MODAL ================== */
+function openConfirmModal(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  if(!name || !phone){ showToast(t('toastFillData'), true); return; }
+  if(!selectedDateStr || !selectedSlot){ showToast(t('toastChooseTime'), true); return; }
+  if(isSlotTaken(selectedDateStr, selectedSlot)){ showToast(t('toastSlotTaken'), true); renderSlots(); return; }
+  if(payMethod==='efectiu' && cashPendingCount() >= CASH_PENDING_LIMIT){
+    showToast(t('toastCashFull'), true);
+    renderPayOptions();
+    return;
+  }
+
+  const svc = getService(selectedServiceId);
+  const d = parseDateStr(selectedDateStr);
+  document.getElementById('modalServiceLine').textContent = svc.name+' ('+svc.price+' €)';
+  document.getElementById('modalDateLine').textContent = d.getDate()+' '+MONTH_NAMES[d.getMonth()]+' '+t('toastAtTime')+' '+selectedSlot;
+  document.getElementById('confirmModal').classList.add('show');
+}
+function closeConfirmModal(){
+  document.getElementById('confirmModal').classList.remove('show');
+}
+
+async function confirmBooking(){
+  const name = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const svc = getService(selectedServiceId);
+  const confirmModalBtn = document.querySelector('#confirmModal .btn-primary');
+  const originalBtnText = confirmModalBtn.textContent;
+
+  if(isSlotTaken(selectedDateStr, selectedSlot)){
+    closeConfirmModal();
+    showToast(t('toastSlotTaken'), true);
+    renderSlots();
+    return;
+  }
+
+  const booking = {
+    id: uid(),
+    date: selectedDateStr,
+    time: selectedSlot,
+    name, phone,
+    serviceId: svc.id,
+    serviceName: svc.name,
+    payMethod,
+    paid: false,
+    price: svc.price,
+    createdAt: Date.now(),
+    createdLabel: nowTimestampLabel(),
+    status: 'confirmed'
+  };
+
+  confirmModalBtn.textContent = '...';
+  confirmModalBtn.disabled = true;
+  try{
+    const result = await apiCreateBooking(booking);
+    if(result.conflict){
+      closeConfirmModal();
+      showToast(t('toastSlotTaken'), true);
+      await refreshBookings();
+      renderSlots();
+      return;
+    }
+    BOOKINGS.push(result.data);
+    saveCustomer({name, phone});
+
+    const confirmedDate = parseDateStr(booking.date);
+    const confirmedTime = booking.time;
+    closeConfirmModal();
+    selectedSlot = null;
+    document.getElementById('custName').value='';
+    document.getElementById('custPhone').value='';
+    renderSlots();
+    updateSummary();
+    renderMyBookings();
+    renderClientMonth();
+    renderPayOptions();
+    showToast(t('toastConfirmedPrefix')+' ' + confirmedDate.getDate() + ' ' + MONTH_NAMES[confirmedDate.getMonth()] + ' ' + t('toastAtTime') + ' ' + confirmedTime);
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  } finally {
+    confirmModalBtn.textContent = originalBtnText;
+    confirmModalBtn.disabled = false;
+  }
+}
+
+async function refreshBookings(){
+  try{
+    BOOKINGS = await apiGetBookings();
+  } catch(e){ /* keep previous state if fetch fails */ }
+}
+
+function renderMyBookings(){
+  const wrap = document.getElementById('myBookingsList');
+  const cust = loadCustomer();
+  let mine = BOOKINGS.filter(b=> b.status!=='cancelled' && (!cust || (b.phone===cust.phone)) );
+  if(mine.length===0){
+    wrap.innerHTML = `<div class="empty-state card"><div class="big">📅</div>${t('noBookingsYet')}</div>`;
+    return;
+  }
+  const upcoming = mine.filter(b=> !isPastDate(b.date)).sort((a,b)=> (a.date+a.time).localeCompare(b.date+b.time));
+  const past = mine.filter(b=> isPastDate(b.date)).sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
+
+  const payLabels = {efectiu:t('payLabelEfectiu'), bizum:t('payLabelBizum'), targeta:t('payLabelTargeta')};
+  function buildItem(b){
+    const d = parseDateStr(b.date);
+    const canCancel = !isPastDate(b.date) && !isToday(b.date);
+    const item = document.createElement('div');
+    item.className='booking-item';
+    item.innerHTML = `
+      <div>
+        <div class="bdate">${d.getDate()} ${MONTH_NAMES[d.getMonth()]} <span class="btime">${b.time}</span></div>
+        <div class="bmeta">${b.serviceName} · ${b.price} € · ${payLabels[b.payMethod]||b.payMethod}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="badge ${b.paid?'paid':'pending'}">${b.paid?t('paidBadge'):t('pendingBadge')}</span>
+        ${canCancel
+          ? `<button class="btn btn-ghost btn-sm" onclick="cancelBooking('${b.id}')">${t('cancelBtn')}</button>`
+          : `<span class="badge locked">${t('lockedBadge')}</span>`}
+      </div>
+    `;
+    return item;
+  }
+
+  wrap.innerHTML='';
+  if(upcoming.length>0){
+    upcoming.forEach(b=> wrap.appendChild(buildItem(b)));
+  } else {
+    wrap.innerHTML = `<div class="empty-note">${t('noBookingsYet')}</div>`;
+  }
+  if(past.length>0){
+    const pastTitle = document.createElement('div');
+    pastTitle.className='section-title';
+    pastTitle.style.marginTop='22px';
+    pastTitle.textContent = t('pastVisitsTitle');
+    wrap.appendChild(pastTitle);
+    past.forEach(b=> wrap.appendChild(buildItem(b)));
+  }
+}
+
+async function cancelBooking(id){
+  const b = BOOKINGS.find(x=>x.id===id);
+  if(!b) return;
+  if(isToday(b.date) || isPastDate(b.date)){
+    showToast(t('toastCannotCancelToday'), true);
+    return;
+  }
+  try{
+    await apiPatchBooking(id, {status:'cancelled'});
+    b.status='cancelled';
+    renderMyBookings();
+    renderClientMonth();
+    renderSlots();
+    renderPayOptions();
+    showToast(t('toastCancelled'));
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  }
+}
+
+function renderClient(){
+  renderServiceGrid();
+  updateHeroPrice();
+  renderClientMonth();
+  renderSlots();
+  renderPayOptions();
+  updateSummary();
+  renderMyBookings();
+}
+function prefillCustomerFields(){
+  const cust = loadCustomer();
+  if(!cust) return;
+  const nameEl = document.getElementById('custName');
+  const phoneEl = document.getElementById('custPhone');
+  if(nameEl && !nameEl.value) nameEl.value = cust.name || '';
+  if(phoneEl && !phoneEl.value) phoneEl.value = cust.phone || '';
+}
+
+/* ================== ADMIN ================== */
+function setAdminTab(tab){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.add('hidden'));
+  document.getElementById('tab-'+tab).classList.remove('hidden');
+  if(tab==='dash') renderDashboard();
+  if(tab==='agenda') renderAdminAgenda();
+  if(tab==='hours') renderHoursEditor();
+  if(tab==='services') renderServicesEditor();
+  if(tab==='money') renderMoney();
+}
+function renderAdmin(){ renderDashboard(); }
+
+function renderDashboard(){
+  const grid = document.getElementById('statGrid');
+  const today = todayStr();
+  const todaysBookings = bookingsForDate(today);
+  const now = new Date();
+  const startMonth = new Date(now.getFullYear(), now.getMonth(),1);
+  const monthBookingsPaid = BOOKINGS.filter(b=> b.status!=='cancelled' && b.paid && parseDateStr(b.date) >= startMonth );
+  const monthRevenue = monthBookingsPaid.reduce((s,b)=>s+b.price,0);
+  const todayRevenue = todaysBookings.filter(b=>b.paid).reduce((s,b)=>s+b.price,0);
+  const pendingPayments = BOOKINGS.filter(b=>b.status!=='cancelled' && !b.paid && !isPastDate(b.date)).length;
+  const cashPending = cashPendingCount();
+
+  grid.innerHTML = `
+    <div class="stat-card">
+      <div class="label">Cites avui</div>
+      <div class="value">${todaysBookings.length}</div>
+      <div class="sub">${todayRevenue} € cobrats</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Ingressos del mes</div>
+      <div class="value">${monthRevenue} €</div>
+      <div class="sub">${monthBookingsPaid.length} cites pagades</div>
+    </div>
+    <div class="stat-card ${pendingPayments>0?'warn':''}">
+      <div class="label">Pagaments pendents</div>
+      <div class="value">${pendingPayments}</div>
+      <div class="sub">a cobrar / confirmar</div>
+    </div>
+    <div class="stat-card ${cashPending>=CASH_PENDING_LIMIT?'warn':''}">
+      <div class="label">Efectiu pendent</div>
+      <div class="value">${cashPending} / ${CASH_PENDING_LIMIT}</div>
+      <div class="sub">${cashPending>=CASH_PENDING_LIMIT? 'Límit assolit':'lloc lliure'}</div>
+    </div>
+  `;
+
+  const upcoming = BOOKINGS
+    .filter(b=> b.status!=='cancelled' && !isPastDate(b.date))
+    .sort((a,b)=> b.createdAt - a.createdAt)
+    .slice(0,10);
+
+  const list = document.getElementById('upcomingList');
+  if(upcoming.length===0){
+    list.innerHTML = `<div class="empty-state"><div class="big">🗓️</div>Cap cita propera.</div>`;
+    return;
+  }
+  list.innerHTML='';
+  const payLabels = {efectiu:'Efectiu', bizum:'Bizum', targeta:'Targeta'};
+  upcoming.forEach(b=>{
+    const d = parseDateStr(b.date);
+    const row = document.createElement('div');
+    row.className='admin-day-row';
+    row.innerHTML = `
+      <div class="admin-time">${d.getDate()}/${pad(d.getMonth()+1)}<br>${b.time}</div>
+      <div class="admin-client">
+        <div class="name">${b.name} · ${b.phone}</div>
+        <div class="phone">${b.serviceName} · ${b.price} € · ${payLabels[b.payMethod]||b.payMethod} · reservat ${b.createdLabel||''}</div>
+      </div>
+      <span class="badge ${b.paid?'paid':'pending'}">${b.paid?'Pagat':'Pendent'}</span>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function adminShiftMonth(dir){
+  adminMonthOffset += dir;
+  renderAdminAgenda();
+}
+function renderAdminAgenda(){
+  const base = new Date();
+  base.setMonth(base.getMonth()+adminMonthOffset);
+  base.setDate(1);
+  const label = buildMonthGrid(base, selectedAdminDateStr, document.getElementById('adminMonthDow'), document.getElementById('adminMonthGrid'), (dStr)=>{
+    selectedAdminDateStr = dStr;
+    renderAdminAgenda();
+  });
+  document.getElementById('adminMonthLabel').textContent = label;
+
+  if(!selectedAdminDateStr){
+    document.getElementById('adminDayTitle').textContent = 'Selecciona un dia';
+    document.getElementById('adminDayAgenda').innerHTML='';
+    return;
+  }
+
+  const d = parseDateStr(selectedAdminDateStr);
+  document.getElementById('adminDayTitle').textContent =
+    `${DAY_NAMES[d.getDay()]} ${d.getDate()} ${MONTH_NAMES[d.getMonth()]}`;
+
+  const wrap = document.getElementById('adminDayAgenda');
+  if(!isDayOpen(selectedAdminDateStr)){
+    wrap.innerHTML = `<div class="empty-state"><div class="big">🚪</div>Tancat aquest dia.</div>`;
+    return;
+  }
+  const dayBookings = bookingsForDate(selectedAdminDateStr).sort((a,b)=>a.time.localeCompare(b.time));
+  if(dayBookings.length===0){
+    wrap.innerHTML = `<div class="empty-state"><div class="big">✨</div>Cap cita aquest dia, encara.</div>`;
+    return;
+  }
+  wrap.innerHTML='';
+  const payLabels = {efectiu:'Efectiu', bizum:'Bizum', targeta:'Targeta'};
+  dayBookings.forEach(b=>{
+    const row = document.createElement('div');
+    row.className='admin-day-row';
+    row.innerHTML = `
+      <div class="admin-time">${b.time}</div>
+      <div class="admin-client">
+        <div class="name">${b.name} · <a href="tel:${b.phone}" style="color:var(--clay-dark);text-decoration:none;">${b.phone}</a></div>
+        <div class="phone">${b.serviceName} · ${b.price} € · ${payLabels[b.payMethod]||b.payMethod} · reservat ${b.createdLabel||''}</div>
+      </div>
+      <div class="admin-actions">
+        ${!b.paid ? `<button class="icon-btn" title="Marcar com a pagat" onclick="markPaid('${b.id}')">💰</button>` : `<span class="badge paid">Pagat</span>`}
+        <button class="icon-btn" title="Eliminar cita" onclick="adminCancel('${b.id}')">✕</button>
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+async function markPaid(id){
+  const b = BOOKINGS.find(x=>x.id===id);
+  if(!b) return;
+  try{
+    const updated = await apiPatchBooking(id, {paid:true, paidLabel: nowTimestampLabel()});
+    b.paid = true;
+    b.paidAt = updated.paidAt;
+    b.paidLabel = updated.paidLabel;
+    renderAdminAgenda();
+    renderDashboard();
+    showToast('Marcat com a pagat');
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  }
+}
+async function adminCancel(id){
+  const b = BOOKINGS.find(x=>x.id===id);
+  if(!b) return;
+  if(!confirm('Eliminar aquesta cita?')) return;
+  try{
+    await apiPatchBooking(id, {status:'cancelled'});
+    b.status='cancelled';
+    renderAdminAgenda();
+    renderDashboard();
+    showToast('Cita eliminada');
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  }
+}
+
+/* ================== ADMIN: HOURS ================== */
+function renderHoursEditor(){
+  const wrap = document.getElementById('hoursEditor');
+  wrap.innerHTML='';
+  const order = [1,2,3,4,5,6,0];
+  order.forEach(dow=>{
+    const h = HOURS[dow];
+    const row = document.createElement('div');
+    row.className = 'day-row' + (!h.open?' off':'');
+    row.id = 'hourrow-'+dow;
+    row.innerHTML = `
+      <div class="dn">${DAY_NAMES[dow]}</div>
+      <div class="toggle ${h.open?'on':''}" onclick="toggleDayOpen(${dow})"><div class="knob"></div></div>
+      <div style="flex:1;display:flex;gap:14px;flex-wrap:wrap;justify-content:flex-end;">
+        <div class="range-inputs">
+          <span style="color:var(--muted);">Matí</span>
+          <input type="time" value="${h.morning[0]}" id="m1-${dow}">
+          <span>–</span>
+          <input type="time" value="${h.morning[1]}" id="m2-${dow}">
+        </div>
+        <div class="range-inputs">
+          <span style="color:var(--muted);">Tarda</span>
+          <input type="time" value="${h.afternoon[0]}" id="a1-${dow}">
+          <span>–</span>
+          <input type="time" value="${h.afternoon[1]}" id="a2-${dow}">
+        </div>
+      </div>
+    `;
+    wrap.appendChild(row);
+  });
+}
+function toggleDayOpen(dow){
+  HOURS[dow].open = !HOURS[dow].open;
+  document.getElementById('hourrow-'+dow).classList.toggle('off', !HOURS[dow].open);
+  document.querySelector('#hourrow-'+dow+' .toggle').classList.toggle('on', HOURS[dow].open);
+}
+async function saveHours(){
+  [0,1,2,3,4,5,6].forEach(dow=>{
+    const m1 = document.getElementById('m1-'+dow), m2 = document.getElementById('m2-'+dow);
+    const a1 = document.getElementById('a1-'+dow), a2 = document.getElementById('a2-'+dow);
+    if(m1 && m2){ HOURS[dow].morning = [m1.value, m2.value]; }
+    if(a1 && a2){ HOURS[dow].afternoon = [a1.value, a2.value]; }
+  });
+  try{
+    await apiSaveHours(HOURS);
+    showToast('Horari desat correctament');
+    renderClientMonth();
+    if(selectedDateStr){ renderSlots(); }
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  }
+}
+
+/* ================== ADMIN: SERVICES ================== */
+function renderServicesEditor(){
+  const wrap = document.getElementById('servicesEditor');
+  wrap.innerHTML='';
+  SERVICES.forEach((s,idx)=>{
+    const row = document.createElement('div');
+    row.className='svc-edit-row';
+    row.id = 'svcrow-'+s.id;
+    row.innerHTML = `
+      ${idx===0 ? '<span class="first-badge">Per defecte</span>' : ''}
+      <input type="text" value="${s.name}" id="svcname-${s.id}" placeholder="Nom del servei">
+      <input type="number" value="${s.price}" id="svcprice-${s.id}" min="0" step="1" placeholder="Preu">
+      <span style="font-size:13px;color:var(--muted);">€</span>
+      <button class="icon-btn" title="Eliminar" onclick="removeServiceRow('${s.id}')">✕</button>
+    `;
+    wrap.appendChild(row);
+  });
+}
+function addServiceRow(){
+  SERVICES.push({id:'s'+Date.now(), name:'', price:15});
+  renderServicesEditor();
+}
+function removeServiceRow(id){
+  if(SERVICES.length<=1){ showToast('Hi ha d\'haver almenys un servei', true); return; }
+  SERVICES = SERVICES.filter(s=>s.id!==id);
+  renderServicesEditor();
+}
+async function saveServices(){
+  const updated = [];
+  SERVICES.forEach(s=>{
+    const nameEl = document.getElementById('svcname-'+s.id);
+    const priceEl = document.getElementById('svcprice-'+s.id);
+    if(!nameEl) return;
+    const name = nameEl.value.trim();
+    const price = parseFloat(priceEl.value) || 0;
+    if(name) updated.push({id:s.id, name, price});
+  });
+  if(updated.length===0){ showToast('Cal almenys un servei vàlid', true); return; }
+  try{
+    await apiSaveServices(updated);
+    SERVICES = updated;
+    showToast('Serveis desats correctament');
+    renderServicesEditor();
+  } catch(e){
+    showToast('Error de connexió. Torna-ho a provar.', true);
+  }
+}
+
+/* ================== ADMIN: MONEY ================== */
+function renderMoney(){
+  const paidBookings = BOOKINGS.filter(b=>b.paid && b.status!=='cancelled');
+  const totalAll = paidBookings.reduce((s,b)=>s+b.price,0);
+  const now = new Date();
+  const startMonth = new Date(now.getFullYear(), now.getMonth(),1);
+  const monthPaid = paidBookings.filter(b=>parseDateStr(b.date)>=startMonth);
+  const monthTotal = monthPaid.reduce((s,b)=>s+b.price,0);
+  const cashTotal = paidBookings.filter(b=>b.payMethod==='efectiu').reduce((s,b)=>s+b.price,0);
+  const bizumTotal = paidBookings.filter(b=>b.payMethod==='bizum').reduce((s,b)=>s+b.price,0);
+  const cardTotal = paidBookings.filter(b=>b.payMethod==='targeta').reduce((s,b)=>s+b.price,0);
+
+  document.getElementById('moneyStatGrid').innerHTML = `
+    <div class="stat-card"><div class="label">Total cobrat</div><div class="value">${totalAll} €</div><div class="sub">${paidBookings.length} cites pagades</div></div>
+    <div class="stat-card"><div class="label">Aquest mes</div><div class="value">${monthTotal} €</div><div class="sub">${monthPaid.length} cites</div></div>
+    <div class="stat-card"><div class="label">Efectiu</div><div class="value">${cashTotal} €</div></div>
+    <div class="stat-card"><div class="label">Bizum</div><div class="value">${bizumTotal} €</div></div>
+    <div class="stat-card"><div class="label">Targeta</div><div class="value">${cardTotal} €</div></div>
+  `;
+
+  const allRelevant = BOOKINGS.filter(b=>b.status!=='cancelled');
+  const sorted = [...allRelevant].sort((a,b)=> (b.date+b.time).localeCompare(a.date+a.time));
+  const hist = document.getElementById('moneyHistory');
+  if(sorted.length===0){
+    hist.innerHTML = `<div class="empty-state"><div class="big">💶</div>Encara no hi ha cap transacció registrada.</div>`;
+    return;
+  }
+  hist.innerHTML='';
+  const payLabels = {efectiu:'Efectiu', bizum:'Bizum', targeta:'Targeta'};
+  sorted.forEach(b=>{
+    const d = parseDateStr(b.date);
+    const row = document.createElement('div');
+    row.className='admin-day-row';
+    row.innerHTML = `
+      <div class="admin-time">${d.getDate()}/${pad(d.getMonth()+1)}<br>${b.time}</div>
+      <div class="admin-client">
+        <div class="name">${b.name} · ${b.phone}</div>
+        <div class="phone">${b.serviceName} · ${payLabels[b.payMethod]||b.payMethod} · enviat ${b.createdLabel||'—'}${b.paid ? ' · pagat '+(b.paidLabel||'') : ''}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="badge ${b.paid?'paid':'pending'}">${b.paid?'Pagat':'Pendent'}</span>
+        <div style="font-weight:700;">${b.price} €</div>
+      </div>
+    `;
+    hist.appendChild(row);
+  });
+}
+
+/* ================== INIT ================== */
+document.getElementById('langCaBtn').classList.toggle('active', currentLang==='ca');
+document.getElementById('langEsBtn').classList.toggle('active', currentLang==='es');
+applyStaticTranslations();
+initHiddenTrigger();
+
+async function initApp(){
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  try{
+    const [hours, bookings, services] = await Promise.all([apiGetHours(), apiGetBookings(), apiGetServices()]);
+    HOURS = hours;
+    BOOKINGS = bookings;
+    if(services && services.length){ SERVICES = services; }
+    dataLoaded = true;
+  } catch(e){
+    showToast('No s\'ha pogut connectar amb el servidor. Revisa la configuració.', true);
+  }
+  if(loadingOverlay) loadingOverlay.classList.add('hidden');
+  renderClient();
+  prefillCustomerFields();
+  startPolling();
+}
+function startPolling(){
+  setInterval(async ()=>{
+    try{
+      const bookings = await apiGetBookings();
+      BOOKINGS = bookings;
+      if(mode==='client'){
+        renderClientMonth();
+        if(selectedDateStr){ renderSlots(); }
+        renderPayOptions();
+        renderMyBookings();
+      } else if(mode==='admin' && isAdminLoggedIn){
+        const activeTab = document.querySelector('.tabs button.active');
+        const tabName = activeTab ? activeTab.dataset.tab : 'dash';
+        if(tabName==='dash') renderDashboard();
+        if(tabName==='agenda') renderAdminAgenda();
+      }
+    } catch(e){ /* silent fail, keep last known state */ }
+  }, 20000);
+}
+
+initApp();
+</script>
+</body>
+</html>
